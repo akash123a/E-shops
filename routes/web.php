@@ -5,6 +5,10 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\FrontsiteController;
 
+use App\Http\Controllers\Admin\GroupController;
+use App\Http\Controllers\Admin\ExpenseController;
+use App\Http\Controllers\Admin\BalanceController;
+
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -31,6 +35,16 @@ Route::middleware(['admin'])->prefix('admin')->group(function () {
 
         Route::resource('sliders', SliderController::class);
 
+
+  
+
+    Route::get('/groups', [GroupController::class, 'index']);
+    Route::post('/groups', [GroupController::class, 'store']);
+
+    Route::post('/expenses', [ExpenseController::class, 'store']);
+
+    Route::get('/balance/{groupId}', [BalanceController::class, 'show']);
+ 
 
 
 });

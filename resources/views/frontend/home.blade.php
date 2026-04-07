@@ -46,6 +46,31 @@
     <p>Discover amazing products at great prices. Shop with confidence and enjoy fast delivery.</p>
 </div>
 
+
+<h2>Your Groups</h2>
+
+<form method="POST" action="/groups">
+    @csrf
+    <input type="text" name="name" placeholder="Group Name">
+    <button>Create</button>
+</form>
+
+@foreach($groups as $group)
+    <p>
+        {{ $group->name }}
+        <a href="/balance/{{ $group->id }}">View Balance</a>
+    </p>
+@endforeach
+
+
+<h2>Hisab (Balances)</h2>
+
+@foreach($balances as $user => $amount)
+    <p>User {{ $user }} : ₹ {{ $amount }}</p>
+@endforeach
+ 
+
+
 <script>
     // Beautiful Slider Functionality
     let currentIndex = 0;
