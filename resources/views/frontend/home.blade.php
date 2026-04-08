@@ -49,7 +49,7 @@
 
 <h2>Your Groups</h2>
 
-<form method="POST" action="/groups">
+<form method="POST" action="{{ route('group.index') }}">
     @csrf
     <input type="text" name="name" placeholder="Group Name">
     <button>Create</button>

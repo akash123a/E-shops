@@ -1,5 +1,9 @@
-<h2>Hisab (Balances)</h2>
+<h2>Who Owes Whom</h2>
 
-@foreach($balances as $user => $amount)
-    <p>User {{ $user }} : ₹ {{ $amount }}</p>
+@foreach($balances as $debtor => $creditors)
+    @foreach($creditors as $creditor => $amount)
+        <p>
+            User {{ $debtor }} owes User {{ $creditor }} : ₹{{ $amount }}
+        </p>
+    @endforeach
 @endforeach

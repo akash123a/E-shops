@@ -23,3 +23,4 @@ class FrontsiteController extends Controller
     }
 
 }
+    

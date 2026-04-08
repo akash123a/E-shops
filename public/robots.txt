@@ -1,2 +1,34 @@
 User-agent: *
 Disallow:
+
+
+
+app/
+ ├── Models/
+ │    ├── User.php
+ │    ├── Group.php
+ │    ├── Expense.php
+ │    ├── ExpenseSplit.php
+ │
+ ├── Http/
+ │    ├── Controllers/
+ │    │     ├── AuthController.php
+ │    │     ├── DashboardController.php
+ │    │     ├── GroupController.php
+ │    │     ├── ExpenseController.php
+ │    │     ├── SettlementController.php
+ │
+database/
+ ├── migrations/
+ │    ├── create_users_table.php
+ │    ├── create_groups_table.php
+ │    ├── create_group_user_table.php
+ │    ├── create_expenses_table.php
+ │    ├── create_expense_splits_table.php
+
+resources/views/
+ ├── auth/
+ ├── dashboard/
+ ├── groups/
+ ├── expenses/
+ ├── layouts/

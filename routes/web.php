@@ -38,7 +38,8 @@ Route::middleware(['admin'])->prefix('admin')->group(function () {
 
   
 
-    Route::get('/groups', [GroupController::class, 'index']);
+    Route::get('/groups', [GroupController::class, 'index'])->name('group.index');
+    Route::post('/groups/add-user', [GroupController::class, 'addUser'])->name('group.addUser');
     Route::post('/groups', [GroupController::class, 'store']);
 
     Route::post('/expenses', [ExpenseController::class, 'store']);

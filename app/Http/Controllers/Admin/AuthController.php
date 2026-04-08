@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin;
+use App\Models\Group;
+use App\Models\User;
+
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -35,10 +38,13 @@ class AuthController extends Controller
         if(!session()->has('admin')){
             return redirect('/admin/login');
         }
-
+    $groups = Group::with(['creator', 'users'])->get();
+     $users = User::all();
+       $balances = [];
+       
         $admin = Admin::find(session('admin'));
 
-        return view('admin.dashboard', compact('admin'));
+        return view('admin.dashboard', compact('admin', 'groups', 'balances','users'));
     }
 
     public function logout(){

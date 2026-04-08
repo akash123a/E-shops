@@ -1,9 +1,8 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Expense;
 
 class BalanceController extends Controller
 {
@@ -17,11 +16,11 @@ class BalanceController extends Controller
             foreach ($expense->splits as $split) {
 
                 if ($split->user_id != $expense->paid_by) {
-                    $balances[$split->user_id] =
-                        ($balances[$split->user_id] ?? 0) - $split->amount;
 
-                    $balances[$expense->paid_by] =
-                        ($balances[$expense->paid_by] ?? 0) + $split->amount;
+                    // debtor → creditor
+                    $balances[$split->user_id][$expense->paid_by] =
+                        ($balances[$split->user_id][$expense->paid_by] ?? 0)
+                        + $split->amount;
                 }
             }
         }

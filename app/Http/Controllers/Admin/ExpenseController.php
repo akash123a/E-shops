@@ -1,17 +1,25 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Expense;
+use App\Models\ExpenseSplit;
 
 class ExpenseController extends Controller
 {
     public function store(Request $request)
     {
+        $request->validate([
+            'group_id' => 'required|exists:groups,id',
+            'amount' => 'required|numeric|min:1',
+            'description' => 'required|string',
+            'users' => 'required|array|min:1'
+        ]);
+
         $expense = Expense::create([
             'group_id' => $request->group_id,
-            'paid_by' => $request->paid_by,
+            'paid_by' => auth()->id(), // always logged-in user
             'amount' => $request->amount,
             'description' => $request->description
         ]);
@@ -27,6 +35,6 @@ class ExpenseController extends Controller
             ]);
         }
 
-        return back();
+        return back()->with('success', 'Expense Added');
     }
 }
