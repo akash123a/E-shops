@@ -30,7 +30,12 @@
                 <li>No members yet</li>
             @endforelse
         </ul>
-
+<a href="{{ route('group.showAddUserForm', $group->id) }}">
+    <button type="button">Add User</button>
+</a>
+<a href="{{ route('expense.form', $group->id) }}">
+    <button type="button">Add Expense</button>
+</a>
     </div>
 
 @endforeach

@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Admin;
 use App\Models\Group;
 use App\Models\User;
-
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
@@ -24,40 +24,60 @@ class AuthController extends Controller
         ]);
 
         $admin = Admin::where('email', $request->email)->first();
-
-        if($admin && Hash::check($request->password, $admin->password)){
-            session(['admin' => $admin->id]);
-            return redirect('/admin/dashboard');
+ 
+        if ($admin && Hash::check($request->password, $admin->password)) {
+            Session::put('admin', $admin->id);
+            $request->session()->regenerate();
+            return redirect()->intended('/admin/dashboard');
         }
 
         return back()->with('error', 'Invalid Credentials');
     }
 
-    public function dashboard(){
+    public function showAddUserForm($id)
+    {
+        $group = Group::findOrFail($id);
+        $users = User::all();
 
-        if(!session()->has('admin')){
-            return redirect('/admin/login');
-        }
-    $groups = Group::with(['creator', 'users'])->get();
-     $users = User::all();
-       $balances = [];
-       
-        $admin = Admin::find(session('admin'));
-
-        return view('admin.dashboard', compact('admin', 'groups', 'balances','users'));
+        return view('admin.groups.add-user', compact('group', 'users'));
     }
 
-    public function logout(){
-        session()->forget('admin');
+    public function dashboard()
+    {
+        if (!Session::has('admin')) {
+            return redirect('/admin/login');
+        }
+
+        $admin = $this->getAdminFromSession();
+        if (!$admin) {
+            Session::forget('admin');
+            return redirect('/admin/login');
+        }
+
+        $groups = Group::with(['creator', 'users'])->get();
+        $users = User::all();
+        $balances = [];
+
+        return view('admin.dashboard', compact('admin', 'groups', 'balances', 'users'));
+    }
+
+    public function logout(Request $request)
+    {
+        Session::forget('admin');
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return redirect('/admin/login');
     }
 
     // Register
-    public function showRegister(){
-        return view('admin.register');  
+    public function showRegister()
+    {
+        return view('admin.register');
     }
 
-    public function register(Request $request){
+    public function register(Request $request)
+    {
 
         $request->validate([
             'name' => 'required',
@@ -74,38 +94,48 @@ class AuthController extends Controller
         return redirect('/admin/login')->with('success', 'Admin Registered Successfully');
     }
 
+    // Show Change Password Page
+    public function showChangePassword()
+    {
+        if (!Session::has('admin')) {
+            return redirect('/admin/login');
+        }
 
-        // Show Change Password Page
-public function showChangePassword(){
-
-    if(!session()->has('admin')){
-        return redirect('/admin/login');
+        return view('admin.change-password');
     }
 
-    return view('admin.change-password');
-}
-
-// Handle Change Password
-public function changePassword(Request $request){
-
-    $request->validate([
+    // Handle Change Password
+    public function changePassword(Request $request)
+    {
+        $request->validate([
         'current_password' => 'required',
         'new_password' => 'required|min:6|confirmed'
     ]);
 
-    $admin = \App\Models\Admin::find(session('admin'));
+    $admin = $this->getAdminFromSession();
 
-    // Check current password
-    if(!\Illuminate\Support\Facades\Hash::check($request->current_password, $admin->password)){
-        return back()->with('error', 'Current password is incorrect');
+    if (!$admin) {
+        Session::forget('admin');
+        return redirect('/admin/login');
     }
 
-    // Update password
-    $admin->password = \Illuminate\Support\Facades\Hash::make($request->new_password);
-    $admin->save();
+        // Check current password
+        if (!Hash::check($request->current_password, $admin->password)) {
+            return back()->with('error', 'Current password is incorrect');
+        }
 
-    return back()->with('success', 'Password changed successfully');
-}
+        // Update password
+        $admin->password = Hash::make($request->new_password);
+        $admin->save();
+       
+        return back()->with('success', 'Password changed successfully');
+    }
+
+    protected function getAdminFromSession()
+    {
+        return Admin::find(Session::get('admin'));
+    }
+
 
 
 

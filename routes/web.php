@@ -8,6 +8,7 @@ use App\Http\Controllers\FrontsiteController;
 use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\ExpenseController;
 use App\Http\Controllers\Admin\BalanceController;
+ 
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -41,10 +42,30 @@ Route::middleware(['admin'])->prefix('admin')->group(function () {
     Route::get('/groups', [GroupController::class, 'index'])->name('group.index');
     Route::post('/groups/add-user', [GroupController::class, 'addUser'])->name('group.addUser');
     Route::post('/groups', [GroupController::class, 'store']);
+    
+// Show add user page
+Route::get('/groups/{id}/add-user', [GroupController::class, 'showAddUserForm'])
+    ->name('group.showAddUserForm');
 
-    Route::post('/expenses', [ExpenseController::class, 'store']);
+// Add user to group
+Route::post('/groups/add-user', [GroupController::class, 'addUser'])
+    ->name('group.addUser');
+Route::get('/admin/dashboard', [App\Http\Controllers\Admin\GroupController::class, 'index'])
+    ->name('admin.dashboard');
+ 
+   // Show form to add expense to a group
+Route::get('/groups/{groupId}/add-expense', [ExpenseController::class, 'showAddExpenseForm'])->name('expense.form');
+
+// Store expense
+Route::post('/expenses', [ExpenseController::class, 'store'])->name('expense.store');
+
+// Split expense
+Route::post('/expenses/{expenseId}/split', [ExpenseController::class, 'splitExpense'])->name('expense.split');
+
+    
 
     Route::get('/balance/{groupId}', [BalanceController::class, 'show']);
+
  
 
 
