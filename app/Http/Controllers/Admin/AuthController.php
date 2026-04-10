@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\ExpenseController;
 use Illuminate\Http\Request;
 use App\Models\Admin;
 use App\Models\Group;
@@ -42,24 +43,39 @@ class AuthController extends Controller
         return view('admin.groups.add-user', compact('group', 'users'));
     }
 
-    public function dashboard()
-    {
-        if (!Session::has('admin')) {
-            return redirect('/admin/login');
-        }
+  
 
-        $admin = $this->getAdminFromSession();
-        if (!$admin) {
-            Session::forget('admin');
-            return redirect('/admin/login');
-        }
-
-        $groups = Group::with(['creator', 'users'])->get();
-        $users = User::all();
-        $balances = [];
-
-        return view('admin.dashboard', compact('admin', 'groups', 'balances', 'users'));
+public function dashboard()
+{
+    if (!Session::has('admin')) {
+        return redirect('/admin/login');
     }
+
+    $admin = $this->getAdminFromSession();
+    if (!$admin) {
+        Session::forget('admin');
+        return redirect('/admin/login');
+    }
+
+    // ✅ Load groups with users + expenses + splits
+    $groups = Group::with(['creator', 'users', 'expenses.splits'])->get();
+
+    $expenseController = new ExpenseController();
+
+    $balances = [];
+    $settlements = [];
+    $group = null;
+
+    // ⚠️ TEMP: only first group (we improve later)
+    if ($groups->count() > 0) {
+        $group = $groups->first();
+
+        $balances = $expenseController->calculateBalances($group->id);
+        $settlements = $expenseController->simplifyDebts($balances);
+    }
+
+    return view('admin.dashboard', compact('admin', 'groups', 'balances', 'settlements', 'group'));
+}
 
     public function logout(Request $request)
     {

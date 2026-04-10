@@ -36,6 +36,20 @@
 <a href="{{ route('expense.form', $group->id) }}">
     <button type="button">Add Expense</button>
 </a>
+
+<h2>Final Settlements</h2>
+
+@if(!empty($settlements))
+    @foreach($settlements as $s)
+        <p>
+    {{ optional($group->users->find($s['from']))->name ?? 'Unknown' }}
+    pays ₹{{ $s['amount'] }} to
+    {{ optional($group->users->find($s['to']))->name ?? 'Unknown' }}
+</p>
+    @endforeach
+@else
+    <p>No settlements yet</p>
+@endif
     </div>
 
 @endforeach

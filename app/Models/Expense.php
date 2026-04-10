@@ -13,6 +13,11 @@ class Expense extends Model
         return $this->hasMany(ExpenseSplit::class);
     }
 
+    public function group(){
+        return $this->belongsTo(Group::class);
+    }
+
+
     public function payer()
     {
         return $this->belongsTo(User::class, 'paid_by');

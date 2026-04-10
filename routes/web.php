@@ -52,16 +52,13 @@ Route::post('/groups/add-user', [GroupController::class, 'addUser'])
     ->name('group.addUser');
 Route::get('/admin/dashboard', [App\Http\Controllers\Admin\GroupController::class, 'index'])
     ->name('admin.dashboard');
- 
-   // Show form to add expense to a group
-Route::get('/groups/{groupId}/add-expense', [ExpenseController::class, 'showAddExpenseForm'])->name('expense.form');
+
+    Route::get('/expense/{group}', [ExpenseController::class, 'create'])->name('expense.form');
 
 // Store expense
 Route::post('/expenses', [ExpenseController::class, 'store'])->name('expense.store');
-
-// Split expense
-Route::post('/expenses/{expenseId}/split', [ExpenseController::class, 'splitExpense'])->name('expense.split');
-
+Route::post('/expense/split/{id}', [ExpenseController::class, 'splitExpense'])->name('expense.split');
+ 
     
 
     Route::get('/balance/{groupId}', [BalanceController::class, 'show']);

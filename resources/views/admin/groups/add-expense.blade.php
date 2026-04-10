@@ -15,24 +15,25 @@
     </div>
 @endif
 
-{{-- Add Expense Form --}}
 <form method="POST" action="{{ route('expense.store') }}">
     @csrf
 
-    {{-- Hidden Group ID --}}
     <input type="hidden" name="group_id" value="{{ $group->id }}">
 
-    {{-- Hidden paid_by field with logged-in user's ID --}}
-    <input type="hidden" name="paid_by" value="{{ $currentUser->id }}">
-
-    {{-- Show current user name --}}
+    {{-- Paid By Select --}}
     <label>Paid By:</label><br>
-    <input type="text" value="{{ $currentUser->name }}" disabled>
+    <select name="paid_by" required>
+        <option value="">-- Select User --</option>
+        @foreach($group->users as $user)
+            <option value="{{ $user->id }}">{{ $user->name }}</option>
+        @endforeach
+    </select>
     <br><br>
 
     <input type="text" name="description" placeholder="Expense Description" required>
     <input type="number" name="amount" placeholder="Amount" step="0.01" required>
     <input type="text" name="category" placeholder="Category (optional)">
+
     <button type="submit">Add Expense</button>
 </form>
 
