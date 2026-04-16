@@ -14,6 +14,7 @@
         @yield('content')
     </div>
 
+
     {{-- Footer --}}
     @include('frontend.partials.footer')
 

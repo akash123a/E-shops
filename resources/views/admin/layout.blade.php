@@ -50,11 +50,15 @@
     <div class="sidebar">
         <h4>Admin Panel</h4>
 
+        <a href="{{ route('settings.index') }}" class="{{ request()->is('admin/settings*') ? 'active' : '' }}">General Settings</a>
         <a href="{{ route('admin.dashboard') }}" class="{{ request()->is('admin/dashboard') ? 'active' : '' }}">Dashboard</a>
 
         <a href="{{ route('admin.users') }}" class="{{ request()->is('admin/users*') ? 'active' : '' }}">Users</a>
  
         <a href="/admin/sliders" class="{{ request()->is('admin/sliders.index') ? 'active' : '' }}">Sliders</a>
+        
+        <a href="{{route('navbar.index')}}" class="{{ request()->is('admin/sliders.index') ? 'active' : '' }}">Navbar</a>
+        <a href="{{route('pages.index')}}" class="{{ request()->is('admin/sliders.index') ? 'active' : '' }}">Pages</a>
 
         <a href="{{route('register.post')}}">Change Password</a>
 

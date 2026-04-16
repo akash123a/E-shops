@@ -8,6 +8,9 @@ use App\Http\Controllers\FrontsiteController;
 use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\ExpenseController;
 use App\Http\Controllers\Admin\BalanceController;
+use App\Http\Controllers\Admin\NavbarController;
+use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\PageController;
  
 
 // Route::get('/', function () {
@@ -76,6 +79,40 @@ Route::get('/users', [App\Http\Controllers\Admin\UserController::class, 'index']
 Route::post('/send-whatsapp/{groupId}', [ExpenseController::class, 'sendSettlementMessage'])
     ->name('send.whatsapp');
 
+
+       Route::get('/navbar', [NavbarController::class, 'index'])->name('navbar.index');
+
+    Route::post('/navbar', [NavbarController::class, 'store'])->name('navbar.store');
+
+    Route::get('/navbar/edit/{id}', [NavbarController::class, 'edit'])->name('navbar.edit');
+
+    Route::post('/navbar/update/{id}', [NavbarController::class, 'update'])->name('navbar.update');
+
+    Route::get('/navbar/delete/{id}', [NavbarController::class, 'delete'])->name('navbar.delete');
+    Route::post('/admin/navbar/reorder', [NavbarController::class, 'reorder'])->name('navbar.reorder');
+
+
+     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::get('/settings/create', [SettingController::class, 'create'])->name('settings.create');
+    Route::post('/settings', [SettingController::class, 'store'])->name('settings.store');
+
+    Route::get('/settings/{id}/edit', [SettingController::class, 'edit'])->name('settings.edit');
+    Route::put('/settings/{id}', [SettingController::class, 'update'])->name('settings.update');
+
+    Route::delete('/settings/{id}', [SettingController::class, 'destroy'])->name('settings.delete');
+
+     Route::get('/pages', [App\Http\Controllers\Admin\PageController::class, 'index'])->name('pages.index');
+    Route::get('/pages/create', [App\Http\Controllers\Admin\PageController::class, 'create'])->name('pages.create');
+    Route::post('/pages/store', [App\Http\Controllers\Admin\PageController::class, 'store'])->name('pages.store');
+
+    Route::get('/pages/edit/{id}', [App\Http\Controllers\Admin\PageController::class, 'edit'])->name('pages.edit');
+    Route::post('/pages/update/{id}', [App\Http\Controllers\Admin\PageController::class, 'update'])->name('pages.update');
+
+    Route::get('/pages/delete/{id}', [App\Http\Controllers\Admin\PageController::class, 'delete'])->name('pages.delete');
+ 
+
 });
 
 Route::get('/test-whatsapp', [ExpenseController::class, 'testWhatsApp']);
+
+Route::get('/page/{slug}', [PageController::class, 'show'])->name('page.show');
