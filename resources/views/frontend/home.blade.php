@@ -2,7 +2,7 @@
 
 @section('content')
 
- 
+         
 
 <!-- Beautiful Slider Section -->
 <div class="slider-container">
@@ -42,6 +42,24 @@
 
 <!-- Hero Section -->
 <div class="hero-section">
+
+<div style="text-align: right; padding: 10px;">
+    @guest
+        <a href="{{ route('login') }}" class="btn btn-success">Login</a>
+        <a href="{{ route('register') }}" class="btn btn-success">Register</a>
+        
+        
+    @endguest
+
+    @auth
+        <a href="{{ route('dashboard') }}" class="btn btn-dark">Dashboard</a>
+
+        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+            @csrf
+            <button type="submit" class="btn btn-danger">Logout</button>
+        </form>
+    @endauth
+</div>
     <h2>Welcome to Our Store</h2>
     <p>Discover amazing products at great prices. Shop with confidence and enjoy fast delivery.</p>
 </div>
@@ -59,6 +77,19 @@
     <p>
         {{ $group->name }}
         <a href="/balance/{{ $group->id }}">View Balance</a>
+
+        
+@if(!empty($settlements))
+    @foreach($settlements as $s)
+        <p>
+    {{ optional($group->users->find($s['from']))->name ?? 'Unknown' }}
+    pays ₹{{ $s['amount'] }} to
+    {{ optional($group->users->find($s['to']))->name ?? 'Unknown' }}
+</p>
+    @endforeach
+@else
+    <p>No settlements yet</p>
+@endif
     </p>
 @endforeach
 

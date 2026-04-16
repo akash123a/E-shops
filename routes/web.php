@@ -16,18 +16,21 @@ use App\Http\Controllers\Admin\BalanceController;
 
 Route::get('/', [FrontsiteController::class, 'home']);
 
-Route::get('/admin/register', [AuthController::class, 'showRegister']);
-Route::post('/admin/register', [AuthController::class, 'register']);
+Route::get('/admin/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/admin/register', [AuthController::class, 'register'])->name('register.post');
 
 
-Route::get('/admin/login', [AuthController::class, 'showLogin']);
-Route::post('/admin/login', [AuthController::class, 'login']);
+ 
+
+Route::get('/admin/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/admin/login', [AuthController::class, 'login'])->name('login.post');
+
 
 // Protected Routes
 Route::middleware(['admin'])->prefix('admin')->group(function () {
 
-    Route::get('/dashboard', [AuthController::class, 'dashboard']);
-    Route::get('/logout', [AuthController::class, 'logout']);
+    Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('admin.logout');
 
      // Change Password
     Route::get('/change-password', [AuthController::class, 'showChangePassword']);
@@ -58,12 +61,21 @@ Route::get('/admin/dashboard', [App\Http\Controllers\Admin\GroupController::clas
 // Store expense
 Route::post('/expenses', [ExpenseController::class, 'store'])->name('expense.store');
 Route::post('/expense/split/{id}', [ExpenseController::class, 'splitExpense'])->name('expense.split');
+
+
+Route::get('/expense/edit/{id}', [ExpenseController::class, 'edit'])->name('expense.edit');
+Route::post('/expense/update/{id}', [ExpenseController::class, 'update'])->name('expense.update');
+Route::post('/expense/delete/{id}', [ExpenseController::class, 'destroy'])->name('expense.delete');
  
-    
 
-    Route::get('/balance/{groupId}', [BalanceController::class, 'show']);
+Route::get('/users', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users');
+
+
 
  
-
+Route::post('/send-whatsapp/{groupId}', [ExpenseController::class, 'sendSettlementMessage'])
+    ->name('send.whatsapp');
 
 });
+
+Route::get('/test-whatsapp', [ExpenseController::class, 'testWhatsApp']);

@@ -23,7 +23,7 @@
 
     <button type="submit">Login</button>
 
-    <p>Don't have an account? <a href="/admin/register">Register</a></p>
+    <p>Don't have an account? <a href="{{route('register')}}">Register</a></p>
 </form>
 
 </body>

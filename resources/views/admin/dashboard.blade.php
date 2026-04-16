@@ -33,9 +33,17 @@
 <a href="{{ route('group.showAddUserForm', $group->id) }}">
     <button type="button">Add User</button>
 </a>
+
 <a href="{{ route('expense.form', $group->id) }}">
     <button type="button">Add Expense</button>
 </a>
+
+<form action="{{ route('send.whatsapp', $group->id) }}" method="POST">
+    @csrf
+    <button type="submit" class="btn btn-success">
+        Send WhatsApp
+    </button>
+</form>
 
 <h2>Final Settlements</h2>
 
@@ -59,7 +67,7 @@
 @foreach($balances as $user => $amount)
     <p>User {{ $user }} : ₹ {{ $amount }}</p>
 @endforeach
-
+    
 <a href="/admin/change-password">Change Password</a><br><br>
 <a href="/admin/logout">Logout</a>
 

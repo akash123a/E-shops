@@ -1,3 +1,6 @@
+@extends('admin.layout')
+@section('content')
+
 <h2>All Sliders</h2>
 
 <a href="{{ route('sliders.create') }}">Add Slider</a>
@@ -29,3 +32,6 @@
     </tr>
     @endforeach
 </table>
+
+
+@endsection

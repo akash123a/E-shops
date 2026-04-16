@@ -38,22 +38,44 @@
 </form>
 
 <hr>
-
 {{-- List of Expenses --}}
 <h3>Expenses</h3>
+
 @foreach($group->expenses as $expense)
-    <p>
-        {{ $expense->description }} - ₹ {{ $expense->amount }} 
-        by {{ $expense->payer->name }}
+    <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+
+        <p>
+            <strong>{{ $expense->description }}</strong>  
+            - ₹ {{ $expense->amount }}  
+            by <b>{{ $expense->payer->name }}</b>
+        </p>
+
+        {{-- SPLIT BUTTON --}}
         @if($expense->splits->isEmpty())
             <form method="POST" action="{{ route('expense.split', $expense->id) }}" style="display:inline">
                 @csrf
                 <button type="submit">Split Expense</button>
             </form>
         @else
-            <small>Already Split</small>
+            <span style="color:green;">✔ Already Split</span>
         @endif
-    </p>
+
+        {{-- EDIT BUTTON --}}
+        <a href="{{ route('expense.edit', $expense->id) }}">
+            <button type="button" style="margin-left:10px;">Edit</button>
+        </a>
+
+        {{-- DELETE BUTTON --}}
+        <form method="POST" action="{{ route('expense.delete', $expense->id) }}" style="display:inline">
+            @csrf
+            <button type="submit" 
+                style="margin-left:10px; color:white; background:red;"
+                onclick="return confirm('Are you sure you want to delete this expense?')">
+                Delete
+            </button>
+        </form>
+
+    </div>
 @endforeach
 
 <br>
