@@ -102,6 +102,28 @@
  
 
 
+@foreach($groups as $group)
+
+    <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+
+        <h3>Group: {{ $group->name }}</h3>
+
+        <p><strong>Created by:</strong> {{ $group->creator->name ?? 'N/A' }}</p>
+
+        <p><strong>Members:</strong></p>
+        <ul>
+            @forelse($group->users as $user)
+                <li>{{ $user->name }}</li>
+            @empty
+                <li>No members yet</li>
+            @endforelse
+        </ul>
+        @endforeach
+
+        <a href="{{ route('expense.form', $group->id) }}">
+    <button type="button">Show Expense</button>
+</a>
+
 <script>
     // Beautiful Slider Functionality
     let currentIndex = 0;
