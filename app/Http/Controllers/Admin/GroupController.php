@@ -52,10 +52,12 @@ class GroupController extends Controller
 
     // Find user by name or create new one
     $user = User::firstOrCreate(
-        ['name' => $request->user_name],
-        ['email' => $request->user_name.'@example.com', 'password' => bcrypt('password')]
-    );
-
+    ['email' => $request->email], // ✅ unique key
+    [
+        'name' => $request->user_name,
+        'password' => bcrypt('password')
+    ]
+);
     // Add user to group
     $group->users()->syncWithoutDetaching([$user->id]);
 

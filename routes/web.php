@@ -5,6 +5,8 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\FrontsiteController;
 
+
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\ExpenseController;
 use App\Http\Controllers\Admin\BalanceController;
@@ -116,3 +118,13 @@ Route::post('/send-whatsapp/{groupId}', [ExpenseController::class, 'sendSettleme
 Route::get('/test-whatsapp', [ExpenseController::class, 'testWhatsApp']);
 
 Route::get('/page/{slug}', [PageController::class, 'show'])->name('page.show');
+
+
+Route::get('/test-mail', function () {
+    Mail::raw('Test Email Working!', function ($message) {
+        $message->to('hamzadevops123@gmail.com')
+                ->subject('Test Mail');
+    });
+
+    return "Mail Sent from local !";
+});

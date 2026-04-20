@@ -24,8 +24,13 @@
 
     {{-- User Name Input --}}
     <label>Enter User Name:</label><br><br>
-    <input type="text" name="user_name" placeholder="Enter name or email" required>
+<label>Name:</label><br>
+<input type="text" name="user_name" required>
 
+<br><br>
+
+<label>Email:</label><br>
+<input type="email" name="email" required>
     <br><br>
     <button type="submit">Add User</button>
 </form>

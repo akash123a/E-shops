@@ -9,6 +9,8 @@ use App\Models\ExpenseSplit;
 use App\Models\Group;
 use App\Models\User;
 use App\Services\WhatsAppService;
+use App\Mail\ExpenseAddedMail;
+use Illuminate\Support\Facades\Mail;
 
 class ExpenseController extends Controller
 {
@@ -25,17 +27,18 @@ class ExpenseController extends Controller
 }
 
 
-    public function store(Request $request)
+ public function store(Request $request)
 {
     $request->validate([
         'group_id' => 'required|exists:groups,id',
         'paid_by' => 'required|exists:users,id',
-        'amount' => 'required|numeric|min:1',
+        'amount'  => 'required|numeric|min:1',
         'description' => 'required|string',
         'category' => 'nullable|string',
     ]);
 
-    \App\Models\Expense::create([
+    // Save Expense
+    $expense = \App\Models\Expense::create([
         'group_id' => $request->group_id,
         'paid_by' => $request->paid_by,
         'amount' => $request->amount,
@@ -43,7 +46,17 @@ class ExpenseController extends Controller
         'category' => $request->category,
     ]);
 
-    return back()->with('success', 'Expense Added Successfully!');
+    // Get Group with Users
+    $group = Group::with('users')->find($request->group_id);
+
+    // Send Mail to all users
+    foreach ($group->users as $user) {
+        if ($user->email) {
+            Mail::to($user->email)->send(new ExpenseAddedMail($expense, $group , $user));
+        }
+    }
+
+    return back()->with('success', 'Expense Added & Email Sent!');
 }
 
 public function edit($id)
