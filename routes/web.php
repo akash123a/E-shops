@@ -72,10 +72,8 @@ Route::get('/expense/edit/{id}', [ExpenseController::class, 'edit'])->name('expe
 Route::post('/expense/update/{id}', [ExpenseController::class, 'update'])->name('expense.update');
 Route::post('/expense/delete/{id}', [ExpenseController::class, 'destroy'])->name('expense.delete');
  
-
-Route::get('/users', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users');
-
-
+ 
+Route::resource('users', App\Http\Controllers\Admin\UserController::class);
 
  
 Route::post('/send-whatsapp/{groupId}', [ExpenseController::class, 'sendSettlementMessage'])

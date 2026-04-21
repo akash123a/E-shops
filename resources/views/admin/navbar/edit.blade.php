@@ -1,3 +1,7 @@
+@extends('admin.layout')
+
+@section('content')
+
 <h2>Edit Menu</h2>
 
 <form method="POST" action="{{ route('navbar.update', $navbar->id) }}">
@@ -14,3 +18,6 @@
 
     <button type="submit">Update</button>
 </form>
+
+
+@endsection

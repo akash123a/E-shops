@@ -1,3 +1,7 @@
+@extends('admin.layout')
+
+@section('content')
+
 <h2>Manage Navbar</h2>
 
 @if(session('success'))
@@ -149,3 +153,5 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 </script>
+
+@endsection

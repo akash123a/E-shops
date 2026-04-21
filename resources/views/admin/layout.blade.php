@@ -53,7 +53,7 @@
         <a href="{{ route('settings.index') }}" class="{{ request()->is('admin/settings*') ? 'active' : '' }}">General Settings</a>
         <a href="{{ route('admin.dashboard') }}" class="{{ request()->is('admin/dashboard') ? 'active' : '' }}">Dashboard</a>
 
-        <a href="{{ route('admin.users') }}" class="{{ request()->is('admin/users*') ? 'active' : '' }}">Users</a>
+        <a href="{{ route('users.index') }}" class="{{ request()->is('admin/users*') ? 'active' : '' }}">Users</a>
  
         <a href="/admin/sliders" class="{{ request()->is('admin/sliders.index') ? 'active' : '' }}">Sliders</a>
         

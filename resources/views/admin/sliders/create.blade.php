@@ -1,3 +1,7 @@
+@extends('admin.layout')
+
+@section('content')
+
 <h2>Add Slider</h2>
 
 <form action="{{ route('sliders.store') }}" method="POST" enctype="multipart/form-data">
@@ -8,3 +12,6 @@
 
     <button type="submit">Save</button>
 </form>
+
+
+@endsection
