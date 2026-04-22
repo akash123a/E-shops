@@ -61,7 +61,8 @@ Route::post('/groups/add-user', [GroupController::class, 'addUser'])
 Route::get('/admin/dashboard', [App\Http\Controllers\Admin\GroupController::class, 'index'])
     ->name('admin.dashboard');
 
-    Route::get('/expense/{group}', [ExpenseController::class, 'create'])->name('expense.form');
+Route::get('/expenses/{group}', [ExpenseController::class, 'index'])->name('expense.index');
+Route::get('/expense/{group}', [ExpenseController::class, 'create'])->name('expense.form');
 
 // Store expense
 Route::post('/expenses', [ExpenseController::class, 'store'])->name('expense.store');

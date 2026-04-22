@@ -9,6 +9,54 @@
     box-sizing: border-box;
 }
 
+/* LIGHT MODE (default already yours) */
+
+/* DARK MODE */
+body.dark {
+    background: #0f172a;
+    color: #e2e8f0;
+}
+
+/* Cards */
+body.dark .form-card,
+body.dark .user-section,
+body.dark .summary-bar {
+    background: #1e293b;
+    color: #e2e8f0;
+}
+
+/* Inputs */
+body.dark input,
+body.dark select {
+    background: #334155;
+    border-color: #475569;
+    color: #e2e8f0;
+}
+
+/* Table */
+body.dark table {
+    background: #1e293b;
+}
+
+body.dark th {
+    background: #334155;
+    color: #cbd5f5;
+}
+
+body.dark td {
+    border-color: #334155;
+}
+
+/* Buttons */
+body.dark .btn-primary {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+}
+
+/* Text colors */
+body.dark .expense-description {
+    color: #f1f5f9;
+}
+
 /* Navbar Container */
 .navbar {
     list-style: none;

@@ -38,6 +38,11 @@
     <button type="button">Add Expense</button>
 </a>
 
+<div id="chat-box"></div>
+
+<input type="text" id="msg">
+<button onclick="sendMessage()">Send</button>
+
 <form action="{{ route('send.whatsapp', $group->id) }}" method="POST">
     @csrf
     <button type="submit" class="btn btn-success">
@@ -70,5 +75,38 @@
     
 <a href="/admin/change-password">Change Password</a><br><br>
 <a href="/admin/logout">Logout</a>
+
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+
+<script>
+var pusher = new Pusher("qxJTySPY43z92bXjH6o9S1CFZI_RF_qUmnF6E5HyYG0", {
+    cluster: "ap2"
+});
+
+var channel = pusher.subscribe("group.1");
+
+channel.bind("message.sent", function(data) {
+    document.getElementById("chat-box").innerHTML += `
+        <p><b>User:</b> ${data.message.message}</p>
+    `;
+});
+</script>
+
+
+<script>
+function sendMessage() {
+    fetch('/send-message', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({
+            message: document.getElementById('msg').value,
+            group_id: 1
+        })
+    });
+}
+</script>
 
 @endsection
